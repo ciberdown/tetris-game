@@ -1,0 +1,20 @@
+.body{
+    display: flex;
+    justify-content: center;
+}
+#container {
+position: absolute;
+  /* display: grid;
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(20, 30px);
+  gap: 1px; */
+}
+#container * {
+  /* box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: wheat;
+  font-size: 10px; */
+}
+
