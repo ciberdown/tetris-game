@@ -1,10 +1,11 @@
 class Shape {
-  constructor(arr, turns, color) {
+  constructor(arr, turns, color, filledPlaces) {
     this.shape = arr;
     this.stop = false;
     this.shapeTurns = turns; //shape + each of turns = new trun of shape
     this.turnIndex = 0; //switch between shapeTurns
     this.shapeColor = color;
+    this.filledPlaces = filledPlaces;
   }
   draw(array) {
     if (array === undefined) {
@@ -12,16 +13,29 @@ class Shape {
     } else {
       array = this.checkEdges(array);
     }
-    this.checkEdges(array).forEach((item) => {
-      let bgColor = document.getElementById(item).style.backgroundColor;//! wheat ->has shape
-      (bgColor.replace('rgba','rgb') !== boxColor.replace('rgba','rgb'))&&(bgColor.replace('rgba','rgb') !== this.shapeColor.replace('rgba','rgb')) &&//!this shape color -> another shape =>so you cant add shape here
-        (console.log(bgColor.replace('rgba','rgb'),boxColor.replace('rgba','rgb'), bgColor.replace('rgba','rgb') !== this.shapeColor.replace('rgba','rgb'))); //stop if all boxes are not empty
-    });
     if (!this.stop) {
       this.removeLastShape();
       this.shape = array;
       this.addShape(array);
     }
+  }
+  in(item, list) {
+    // let a = filledPlaces;
+    // let b = list;
+    let a = item;
+    let b = list;
+    b = b.map((item) => {
+      return item.toString();
+    });
+    if (b.indexOf(a.toString()) !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+    // filledPlaces.push([
+    //   parseInt(item.split(",")[0]),
+    //   parseInt(item.split(",")[1]),
+    // ]);
   }
   removeLastShape() {
     this.shape !== undefined &&
@@ -67,6 +81,7 @@ class Shape {
     }
     return array;
   }
+
   checkToStop(array) {
     !this.stop &&
       array.forEach((element) => {
@@ -75,17 +90,27 @@ class Shape {
   }
   down() {
     let array = this.shape;
+    this.checkEmpty(array);
     this.checkToStop(array);
     if (!this.stop) {
       array = array.map((element) => {
         return [element[0] + 1, element[1]];
       });
-      this.draw(array); //first remove and draw last one
-      this.shape = array; // then add new shape
+      this.draw(array); //first remove last one and draw new one
+      this.shape = array; // then add new shape to this object
+    } else {
+      array = [false, this.shape];
     }
-    console.log(array);
-    this.stop && (array = false);
     return array;
+  }
+  checkEmpty(array) {
+    for (let i = 0; i < array.length; i++) {
+      let item = array[i];
+      if (this.in(item, this.filledPlaces)) {
+        this.stop = true;
+        break;
+      }
+    }
   }
   turnShape() {
     let turnForm = this.shapeTurns[this.turnIndex];
@@ -94,5 +119,27 @@ class Shape {
     });
     this.turnIndex = (this.turnIndex + 1) % this.shapeTurns.length;
     this.draw(newArray);
+  }
+  left() {
+    let array = this.shape;
+    if (!this.stop) {
+      array = array.map((element) => {
+        return [element[0], element[1] - 1];
+      });
+      array = this.checkEdges(array);
+      this.draw(array); //first remove and draw last one
+      this.shape = array; // then add new shape
+    }
+  }
+  right() {
+    let array = this.shape;
+    if (!this.stop) {
+      array = array.map((element) => {
+        return [element[0], element[1] + 1];
+      });
+      array = this.checkEdges(array);
+      this.draw(array); //first remove and draw last one
+      this.shape = array; // then add new shape
+    }
   }
 }
