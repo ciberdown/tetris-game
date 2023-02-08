@@ -1,3 +1,4 @@
+
 class Style {
     constructor(box_size, box_color, gap, box_number) {
       this.box_size = box_size;

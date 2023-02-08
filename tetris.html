@@ -5,13 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tetris game!</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
     <div id="container"></div>
-    <script async src="app.js"></script>
+    <script defer src="app.js"></script>
     <script src="./shapes.js"></script>
     <script src="./styles.js"></script>
   </head>
   <body id="body" class="body">
-    <section><button style="padding: 4px; margin: 0px; ">start</button></section>
+    <section>
+      <button style="padding: 4px; margin: 0px; cursor: pointer;">start</button>
+      <button id="rotate" style="padding: 4px; margin: 0px; cursor: pointer;">turn</button>
+    </section>
   </body>
 </html>

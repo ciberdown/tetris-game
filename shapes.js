@@ -2,10 +2,21 @@ class Shape {
   constructor(arr, turns, color) {
     this.shape = arr;
     this.stop = false;
+    this.shapeTurns = turns; //shape + each of turns = new trun of shape
+    this.turnIndex = 0; //switch between shapeTurns
     this.shapeColor = color;
   }
   draw(array) {
-    array = this.checkEdges(array);
+    if (array === undefined) {
+      array = this.checkEdges(this.shape);
+    } else {
+      array = this.checkEdges(array);
+    }
+    this.checkEdges(array).forEach((item) => {
+      let bgColor = document.getElementById(item).style.backgroundColor;//! wheat ->has shape
+      (bgColor.replace('rgba','rgb') !== boxColor.replace('rgba','rgb'))&&(bgColor.replace('rgba','rgb') !== this.shapeColor.replace('rgba','rgb')) &&//!this shape color -> another shape =>so you cant add shape here
+        (console.log(bgColor.replace('rgba','rgb'),boxColor.replace('rgba','rgb'), bgColor.replace('rgba','rgb') !== this.shapeColor.replace('rgba','rgb'))); //stop if all boxes are not empty
+    });
     if (!this.stop) {
       this.removeLastShape();
       this.shape = array;
@@ -69,11 +80,19 @@ class Shape {
       array = array.map((element) => {
         return [element[0] + 1, element[1]];
       });
-      this.draw(array);//first remove and draw last one
-      this.shape = array;// then add new shape
+      this.draw(array); //first remove and draw last one
+      this.shape = array; // then add new shape
     }
     console.log(array);
     this.stop && (array = false);
     return array;
+  }
+  turnShape() {
+    let turnForm = this.shapeTurns[this.turnIndex];
+    let newArray = this.shape.map((el, index) => {
+      return [el[0] + turnForm[index][0], el[1] + turnForm[index][1]];
+    });
+    this.turnIndex = (this.turnIndex + 1) % this.shapeTurns.length;
+    this.draw(newArray);
   }
 }
